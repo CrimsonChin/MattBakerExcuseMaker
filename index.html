@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+	    <title>MBEM</title>
+	    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	    <meta name="description" content="">
+	    <meta name="author" content="">
+
+	    <!-- Le styles -->
+	    <link href="lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+	    <style>
+	 	body {
+			padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+			background-color: #eee;
+		}
+
+		.profile-photo {
+			width: 50px;
+			height: 50px;
+		}
+		
+		.msg.sender {
+			background-color: #897CB1;
+			float: right;
+		}
+
+		.msg-space {
+			margin-top: 10px;
+		}
+
+		.msg {
+			background-color: #E5E1F2;
+			padding: 10px;
+			border-radius: 10px;
+			float: left;
+		}
+
+	    </style>
+
+	    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+	    <!--[if lt IE 9]>
+	      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+	    <![endif]-->
+
+	    <!-- Fav and touch icons -->
+	    <link rel="shortcut icon" href="../assets/ico/favicon.ico">
+
+	</head>
+
+	<body>
+
+    <div class="container">
+    	<div class="row">
+			<div class="span12">
+				<h1>Matt Baker, Excuse Maker</h1>
+			</div>
+    	</div><!-- /row -->
+
+    	<div class="row">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">Messages</h3>
+				</div>
+				<div class="panel-body">
+					<div id="msg-one" class="row msg-space">
+						<div class="col-md-11">
+							<div class="msg sender"> Hello mate.  Gunna grab a seat by the window.  See you in a few mins.</div>
+						</div>
+						<div class="col-md-1">
+							<img class="img-circle profile-photo" src="img/placeholder-hi.png" >
+						</div>
+					</div><!-- #msg-one -->
+
+					<div id="msg-two" class="row msg-space">
+						<div class="col-md-11">
+							<div class="msg sender">Still coming?</div>
+						</div>
+						<div class="col-md-1">
+							<img class="img-circle profile-photo" src="img/placeholder-hi.png" >
+						</div>
+					</div><!-- #msg-two -->
+
+					<div id="msg-two" class="row msg-space">
+						<div class="col-md-11">
+							<div class="msg sender">Matt, it's half time!  What are you doing man?</div>
+						</div>
+						<div class="col-md-1">
+							<img class="img-circle profile-photo" src="img/placeholder-hi.png" >
+						</div>
+					</div><!-- #msg-two -->
+
+					<div id="matt-msg" class="row msg-space">
+						<div class="col-md-1">
+							<img class="img-circle profile-photo" src="img/mrmime.png" >
+						</div>
+
+						<div class="col-md-6">
+							<div class="msg"> </div>
+						</div>
+
+						<audio id="audio">
+							<source src="">
+						</audio>
+					</div><!-- #matt-msg -->
+				</div><!-- panel-body-->
+			</div><!-- panel -->
+    	</div>
+    </div> <!-- /container -->
+
+	<script src="lib/jquery-3.2.1.min.js"></script>
+	<script src="lib/bootstrap/js/bootstrap.min.js"></script>
+	<script src="lib/underscore-min.js" ></script>
+    <script>
+
+function Segment(text, src) {
+	this.text = text;
+	this.src = src + ".mp3";
+}
+
+var segmentOneInserts = [
+				new Segment("lie to you", "Voice 001"),
+				new Segment("waste any more of your time", "Voice 002"),
+				new Segment("try to hide behind it", "Voice 003"),
+				new Segment("ignore the fact that I", "Voice 004"),
+				new Segment("go on about it", "Voice 006"),
+				new Segment("pretend anymore", "Voice 007")
+			];
+
+var segmentTwoInserts = [
+				new Segment("absorbed in", "Voice 008"),
+				new Segment("obsessed with", "Voice 009"),
+				new Segment("wrapped up in", "Voice 010"),
+				new Segment("furious about", "Voice 011")
+			];
+
+var segmentThreeInserts = [
+				new Segment("having a bath", "Voice 012"),
+				new Segment("getting a job", "Voice 013"),
+				new Segment("hiding my mime certificate", "Voice 014"),
+				new Segment("daytime TV", "Voice 015"),
+				new Segment("watching porn", "Voice 016"),
+				new Segment("filming my neighbour", "Voice 017"),
+				new Segment("crying wildy", "Voice 018"),
+				new Segment("the sound of laughter", "Voice 019")
+			];
+
+var segmentFourInserts = [
+				new Segment("the time", "Voice 020"),
+				new Segment("to call ahead", "Voice 021"),
+				new Segment("to apply for any work", "Voice 022")
+			];
+
+var segmentFiveInserts = [
+				new Segment("waiting on my mum", "Voice 023"),
+				new Segment("tying my shoe laces", "Voice 024"),
+				new Segment("getting in the car", "Voice 025"),
+				new Segment("getting off the train", "Voice 026"),
+				new Segment("trying to find my clothes", "Voice 027")
+			];
+
+var segmentSixInserts = [
+				new Segment("daylight saving time", "Voice 028"),
+				new Segment("a solar eclipse", "Voice 029"),
+				new Segment("this chick from school", "Voice 030"),
+				new Segment("bumping into a friend","Voice 031"),
+				new Segment("the police", "Voice 032"),
+				new Segment("my mum", "Voice 033")
+			];
+
+function getRandomSegmentInsert(segmentInserts){
+	return _.shuffle(segmentInserts).shift();
+}
+
+// I wont (1), I got so (2) (3) that I completey forgot (4).
+// I'm just (4) as we speak.  If it wasnt for (5) I'd of been there hours ago.
+// I'm only (6) late. 
+function generateExcuse(){
+	return [
+		new Segment("I won't", "Voice 038"),
+		getRandomSegmentInsert
+	(segmentOneInserts),
+		new Segment("I got so", "Voice 039"),
+		getRandomSegmentInsert
+	(segmentTwoInserts),
+		getRandomSegmentInsert
+	(segmentThreeInserts),
+		new Segment("that I completey forgot", "Voice 040"),
+		getRandomSegmentInsert
+	(segmentFourInserts), 
+		new Segment( "I'm just", "Voice 041"),
+		getRandomSegmentInsert
+	(segmentFiveInserts),
+		new Segment("as we speak. If it wasn't for", "Voice 042"),
+		getRandomSegmentInsert
+	(segmentSixInserts),
+		new Segment("I'd of been there hours ago!", "Voice 043")
+	];
+}
+
+var excuse = generateExcuse();
+var excuseMessage = excuse.map(function(elem){
+	return elem.text;
+}).join(" ");
+
+$("#matt-msg .msg").text(excuseMessage);
+
+$("audio").on('ended',function(e){
+    if(excuse.length > 0){
+      this.src= "audio/" + excuse.shift().src;   
+      this.play();      
+    }
+});
+
+var audio = $("#audio")[0];
+audio.src = "audio/" + excuse.shift().src + "";
+audio.play();
+    </script>
+  </body>
+</html>
