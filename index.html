@@ -92,9 +92,9 @@
 							<source src="">
 						</audio>
 					</div><!-- #matt-msg -->
-				</div><!-- panel-body-->
-			</div><!-- panel -->
-    	</div>
+				</div><!-- /panel-body-->
+			</div><!-- /panel -->
+    	</div><!-- /row -->
     </div> <!-- /container -->
 
 	<script src="lib/jquery-3.2.1.min.js"></script>
@@ -167,22 +167,16 @@ function getRandomSegmentInsert(segmentInserts){
 function generateExcuse(){
 	return [
 		new Segment("I won't", "Voice 038"),
-		getRandomSegmentInsert
-	(segmentOneInserts),
+		getRandomSegmentInsert(segmentOneInserts),
 		new Segment("I got so", "Voice 039"),
-		getRandomSegmentInsert
-	(segmentTwoInserts),
-		getRandomSegmentInsert
-	(segmentThreeInserts),
+		getRandomSegmentInsert(segmentTwoInserts),
+		getRandomSegmentInsert(segmentThreeInserts),
 		new Segment("that I completey forgot", "Voice 040"),
-		getRandomSegmentInsert
-	(segmentFourInserts), 
+		getRandomSegmentInsert(segmentFourInserts), 
 		new Segment( "I'm just", "Voice 041"),
-		getRandomSegmentInsert
-	(segmentFiveInserts),
+		getRandomSegmentInsert(segmentFiveInserts),
 		new Segment("as we speak. If it wasn't for", "Voice 042"),
-		getRandomSegmentInsert
-	(segmentSixInserts),
+		getRandomSegmentInsert(segmentSixInserts),
 		new Segment("I'd of been there hours ago!", "Voice 043")
 	];
 }
