@@ -1,0 +1,52 @@
+body {
+	padding-top: 60px; 
+	background-color: #eee;
+}
+.profile-photo {
+	width: 50px;
+	height: 50px;
+}
+.timestamp {
+	float: right;
+	color: darkgrey;
+}
+.message-list {
+	list-style: none;
+	padding: 0 20px;
+}
+.message-list li {
+	margin-bottom: 15px;
+	overflow: auto;
+}
+.message-image {
+	float: right;
+}
+.message-content {
+	display: inline-block;
+	max-width: 600px;
+	padding: 10px;
+	margin: 0 10px;
+}
+.received .message-image  {
+	float:left;
+}
+.received .message-content  {
+	float:left;
+	background-color: #f7f7f7;
+	border-radius: 0px 5px 5px 5px;
+	
+}
+.sent .message-content {
+	float: right;
+	background-color: #e5f7ff;
+	border-radius: 5px 0px 5px 5px;
+}
+.panel-light {
+	border-color: #2196F3;
+}
+.panel-light>.panel-heading {
+	color: #fff;
+	background-color: #2196F3;
+	border-color: #2196F3;
+	padding: 20px;
+}
