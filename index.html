@@ -1,203 +1,184 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="utf-8">
-	    <title>MBEM</title>
-	    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-	    <meta name="description" content="Matt Baker is often late, his excuses never dull.">
-	    <meta name="author" content="Jon Wells">
+<head>
+	<meta charset="utf-8">
+	<title>MBEM</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="Matt Baker is often late, his excuses never dull.">
+	<meta name="author" content="Jon Wells">
 
-	    <link href="lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-	    <style>
-	 	body {
-			padding-top: 60px; 
-			background-color: #eee;
-		}
+	<link href="lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+	<link href="css/mbem-styles.css" rel="stylesheet">
+</head>
+<body>
 
-		.profile-photo {
-			width: 50px;
-			height: 50px;
-		}
-		
-		.msg.sender {
-			background-color: #897CB1;
-			float: right;
-		}
-
-		.msg-space {
-			margin-top: 10px;
-		}
-
-		.msg {
-			background-color: #E5E1F2;
-			padding: 10px;
-			border-radius: 10px;
-			float: left;
-		}
-
-	    </style>
-	</head>
-	<body>
-
-    <div class="container">
-    	<div class="row">
+	<div class="container">
+		<div class="row">
 			<div class="span12">
 				<h1>Matt Baker, Excuse Maker</h1>
 			</div>
-    	</div><!-- /row -->
+		</div><!-- /row -->
 
-    	<div class="row">
-			<div class="panel panel-default">
+		<div class="row">
+			<div class="panel panel-light">
 				<div class="panel-heading">
-					<h3 class="panel-title">Messages</h3>
+					<h3 class="panel-title">MESSAGES</h3>
 				</div>
 				<div class="panel-body">
-					<div id="msg-one" class="row msg-space">
-						<div class="col-md-11">
-							<div class="msg sender"> Hello mate.  Gunna grab a seat by the window.  See you in a few mins.</div>
-						</div>
-						<div class="col-md-1">
-							<img class="img-circle profile-photo" src="img/placeholder-hi.png" >
-						</div>
-					</div><!-- #msg-one -->
-
-					<div id="msg-two" class="row msg-space">
-						<div class="col-md-11">
-							<div class="msg sender">Still coming?</div>
-						</div>
-						<div class="col-md-1">
-							<img class="img-circle profile-photo" src="img/placeholder-hi.png" >
-						</div>
-					</div><!-- #msg-two -->
-
-					<div id="msg-three" class="row msg-space">
-						<div class="col-md-11">
-							<div class="msg sender">Matt, it's half time!  What are you doing man?</div>
-						</div>
-						<div class="col-md-1">
-							<img class="img-circle profile-photo" src="img/placeholder-hi.png" >
-						</div>
-					</div><!-- #msg-three -->
-
-					<div id="matt-msg" class="row msg-space">
-						<div class="col-md-1">
-							<img class="img-circle profile-photo" src="img/mrmime.png" >
-						</div>
-
-						<div class="col-md-6">
-							<div class="msg"> </div>
-						</div>
-
-						<audio id="audio">
-							<source src="">
-						</audio>
-					</div><!-- #matt-msg -->
+					<ul class="message-list"></ul>
 				</div><!-- /panel-body-->
 			</div><!-- /panel -->
-    	</div><!-- /row -->
-    </div> <!-- /container -->
+		</div><!-- /row -->
+	</div> <!-- /container -->
+
+	<audio id="audio">
+		<source src="">
+	</audio>
 
 	<script src="lib/jquery-3.2.1.min.js"></script>
 	<script src="lib/bootstrap/js/bootstrap.min.js"></script>
-	<script src="lib/underscore-min.js" ></script>
-    <script>
+	<script src="lib/underscore-min.js"></script>
+	<script src="lib/mustache.min.js"></script>
 
-function Segment(text, src) {
-	this.text = text;
-	this.src = src + ".mp3";
-}
+	<script id="msg-template" type="x-tmpl-mustache">
+		<li class="{{operation}}">
+			<div class="message-image">
+				<img class="img-circle profile-photo" src="img/{{image}}">
+			</div>
+			<div class="message-content">
+				<p>{{message}}</p>
+				<span class="timestamp">{{time}}</span>
+			</div>
+		</li>
+	</script>
 
-var segmentOneInserts = [
-				new Segment("lie to you", "Voice 001"),
-				new Segment("waste any more of your time", "Voice 002"),
-				new Segment("try to hide behind it", "Voice 003"),
-				new Segment("ignore the fact that I", "Voice 004"),
-				new Segment("go on about it", "Voice 006"),
-				new Segment("pretend anymore", "Voice 007")
+	<script>
+		$(function () {
+
+			function Message(operation, image, message, time) {
+				this.operation = operation;
+				this.image = image;
+				this.message = message;
+				this.time = time;
+			}
+
+			var template = $('#msg-template').html();
+			var $chatList = $('.message-list');
+			Mustache.parse(template);
+
+			var message = new Message("sent", "placeholder-hi.png", "Hello mate, I'm about to set off.  KO is 8.  See you in a bit.", "7:24");
+			var messageHtml = Mustache.render(template, message);
+			$chatList.append(messageHtml);
+
+			message = new Message("sent", "placeholder-hi.png", "Lost?  It's half time already.", "8:51");
+			messageHtml = Mustache.render(template, message);
+			$chatList.append(messageHtml);
+
+			message = new Message("sent", "placeholder-hi.png", "We're calling it a night soon...", "22:24");
+			messageHtml = Mustache.render(template, message);
+			$chatList.append(messageHtml);
+
+			function AudioClip(transcript, src) {
+				this.transcript = transcript;
+				this.src = src + ".mp3";
+			}
+
+			var audioClipOneInserts = [
+							new AudioClip("lie to you", "Voice 001"),
+							new AudioClip("waste any more of your time", "Voice 002"),
+							new AudioClip("try to hide behind it", "Voice 003"),
+							new AudioClip("ignore the fact that I", "Voice 004"),
+							new AudioClip("go on about it", "Voice 006"),
+							new AudioClip("pretend anymore", "Voice 007")
 			];
 
-var segmentTwoInserts = [
-				new Segment("absorbed in", "Voice 008"),
-				new Segment("obsessed with", "Voice 009"),
-				new Segment("wrapped up in", "Voice 010"),
-				new Segment("furious about", "Voice 011")
+			var audioClipTwoInserts = [
+							new AudioClip("absorbed in", "Voice 008"),
+							new AudioClip("obsessed with", "Voice 009"),
+							new AudioClip("wrapped up in", "Voice 010"),
+							new AudioClip("furious about", "Voice 011")
 			];
 
-var segmentThreeInserts = [
-				new Segment("having a bath", "Voice 012"),
-				new Segment("getting a job", "Voice 013"),
-				new Segment("hiding my mime certificate", "Voice 014"),
-				new Segment("daytime TV", "Voice 015"),
-				new Segment("watching porn", "Voice 016"),
-				new Segment("filming my neighbour", "Voice 017"),
-				new Segment("crying wildy", "Voice 018"),
-				new Segment("the sound of laughter", "Voice 019")
+			var audioClipThreeInserts = [
+							new AudioClip("having a bath", "Voice 012"),
+							new AudioClip("getting a job", "Voice 013"),
+							new AudioClip("hiding my mime certificate", "Voice 014"),
+							new AudioClip("daytime TV", "Voice 015"),
+							new AudioClip("watching porn", "Voice 016"),
+							new AudioClip("filming my neighbour", "Voice 017"),
+							new AudioClip("crying wildy", "Voice 018"),
+							new AudioClip("the sound of laughter", "Voice 019")
 			];
 
-var segmentFourInserts = [
-				new Segment("the time", "Voice 020"),
-				new Segment("to call ahead", "Voice 021"),
-				new Segment("to apply for any work", "Voice 022")
+			var audioClipFourInserts = [
+							new AudioClip("the time", "Voice 020"),
+							new AudioClip("to call ahead", "Voice 021"),
+							new AudioClip("to apply for any work", "Voice 022")
 			];
 
-var segmentFiveInserts = [
-				new Segment("waiting on my mum", "Voice 023"),
-				new Segment("tying my shoe laces", "Voice 024"),
-				new Segment("getting in the car", "Voice 025"),
-				new Segment("getting off the train", "Voice 026"),
-				new Segment("trying to find my clothes", "Voice 027")
+			var audioClipFiveInserts = [
+							new AudioClip("waiting on my mum", "Voice 023"),
+							new AudioClip("tying my shoe laces", "Voice 024"),
+							new AudioClip("getting in the car", "Voice 025"),
+							new AudioClip("getting off the train", "Voice 026"),
+							new AudioClip("trying to find my clothes", "Voice 027")
 			];
 
-var segmentSixInserts = [
-				new Segment("daylight saving time", "Voice 028"),
-				new Segment("a solar eclipse", "Voice 029"),
-				new Segment("this chick from school", "Voice 030"),
-				new Segment("bumping into a friend","Voice 031"),
-				new Segment("the police", "Voice 032"),
-				new Segment("my mum", "Voice 033")
+			var audioClipSixInserts = [
+							new AudioClip("daylight saving time", "Voice 028"),
+							new AudioClip("a solar eclipse", "Voice 029"),
+							new AudioClip("this chick from school", "Voice 030"),
+							new AudioClip("bumping into a friend", "Voice 031"),
+							new AudioClip("the police", "Voice 032"),
+							new AudioClip("my mum", "Voice 033")
 			];
 
-function getRandomSegmentInsert(segmentInserts){
-	return _.shuffle(segmentInserts).shift();
-}
+			function getRandomAudioClipInsert(audioClipInserts) {
+				return _.shuffle(audioClipInserts).shift();
+			}
 
-// I wont (1), I got so (2) (3) that I completey forgot (4).
-// I'm just (4) as we speak.  If it wasnt for (5) I'd of been there hours ago.
-// I'm only (6) late. 
-function generateExcuse(){
-	return [
-		new Segment("I won't", "Voice 038"),
-		getRandomSegmentInsert(segmentOneInserts),
-		new Segment("I got so", "Voice 039"),
-		getRandomSegmentInsert(segmentTwoInserts),
-		getRandomSegmentInsert(segmentThreeInserts),
-		new Segment("that I completey forgot", "Voice 040"),
-		getRandomSegmentInsert(segmentFourInserts), 
-		new Segment( "I'm just", "Voice 041"),
-		getRandomSegmentInsert(segmentFiveInserts),
-		new Segment("as we speak. If it wasn't for", "Voice 042"),
-		getRandomSegmentInsert(segmentSixInserts),
-		new Segment("I'd of been there hours ago!", "Voice 043")
-	];
-}
+			// I wont (1), I got so (2) (3) that I completey forgot (4).
+			// I'm just (4) as we speak.  If it wasnt for (5) I'd of been there hours ago.
+			// I'm only (6) late.
+			function generateExcuse() {
+				return [
+					new AudioClip("I won't", "Voice 038"),
+					getRandomAudioClipInsert(audioClipOneInserts),
+					new AudioClip("I got so", "Voice 039"),
+					getRandomAudioClipInsert(audioClipTwoInserts),
+					getRandomAudioClipInsert(audioClipThreeInserts),
+					new AudioClip("that I completey forgot", "Voice 040"),
+					getRandomAudioClipInsert(audioClipFourInserts),
+					new AudioClip("I'm just", "Voice 041"),
+					getRandomAudioClipInsert(audioClipFiveInserts),
+					new AudioClip("as we speak. If it wasn't for", "Voice 042"),
+					getRandomAudioClipInsert(audioClipSixInserts),
+					new AudioClip("I'd of been there hours ago!", "Voice 043")
+				];
+			}
 
-var excuse = generateExcuse();
-var excuseMessage = excuse.map(function(elem){
-	return elem.text;
-}).join(" ");
+			var excuseAudioClips = generateExcuse();
+			var transcript = excuseAudioClips.map(function (elem) {
+				return elem.transcript;
+			}).join(" ");
 
-$("#matt-msg .msg").text(excuseMessage);
 
-$("audio").on('ended',function(e){
-    if(excuse.length > 0){
-      this.src= "audio/" + excuse.shift().src;   
-      this.play();      
-    }
-});
+			var excuseMessage = new Message("received", "mrmime.png", transcript, "23:19");
+			var theExcuse = Mustache.render(template, excuseMessage);
+			$chatList.append(theExcuse);
 
-var audio = $("#audio")[0];
-audio.src = "audio/" + excuse.shift().src + "";
-audio.play();
-    </script>
-  </body>
+			$("audio").on('ended', function (e) {
+				if (excuseAudioClips.length > 0) {
+					this.src = "audio/" + excuseAudioClips.shift().src;
+					this.play();
+				}
+			});
+
+			var audio = $("#audio")[0];
+			audio.src = "audio/" + excuseAudioClips.shift().src;
+			audio.play();
+		});
+
+	</script>
+</body>
 </html>
